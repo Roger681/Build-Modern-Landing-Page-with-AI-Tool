@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaunchPad - Modern SaaS Landing Page</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Element SDK -->
+    <script src="/_sdk/element_sdk.js"></script>
+    
+    <style>
+        :root {
+            --gradient-start: #667eea;
+            --gradient-end: #764ba2;
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --text-dark: #1a1a2e;
+            --text-light: #6b7280;
+            --bg-light: #f8fafc;
+            --white: #ffffff;
+        }
+
+        [data-bs-theme="dark"] {
+            --text-dark: #f1f5f9;
+            --text-light: #94a3b8;
+            --bg-light: #1e293b;
+            --white: #0f172a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--white);
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        [data-bs-theme="dark"] .navbar.scrolled {
+            background: rgba(15, 23, 42, 0.95);
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--text-dark) !important;
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border: none;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+
+        .btn-outline-gradient {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-gradient:hover {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border-color: transparent;
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            color: white;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+
+        .hero-image {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-image svg {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.2));
+        }
+
+        /* Feature Cards */
+        .feature-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.15);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .feature-title {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .feature-text {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* About Section */
+        .about-section {
+            background: var(--bg-light);
+        }
+
+        .about-image {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .about-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .about-list li {
+            padding: 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .about-list li i {
+            color: var(--primary-color);
+            font-size: 1.25rem;
+        }
+
+        /* Pricing Cards */
+        .pricing-card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .pricing-card.popular {
+            border-color: var(--primary-color);
+            position: relative;
+        }
+
+        .pricing-card.popular::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .pricing-price {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pricing-features {
+            list-style: none;
+            padding: 1.5rem 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .pricing-features li {
+            padding: 0.75rem 0;
+            color: var(--text-light);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
+        /* Testimonials */
+        .testimonial-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            height: 100%;
+        }
+
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            color: var(--text-light);
+            line-height: 1.8;
+            margin: 1.5rem 0;
+        }
+
+        .testimonial-name {
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .testimonial-role {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--text-dark);
+            color: rgba(255,255,255,0.7);
+        }
+
+        [data-bs-theme="dark"] .footer {
+            background: #0a0f1a;
+        }
+
+        .footer-title {
+            color: white;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            transform: translateY(-3px);
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-weight: 800;
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-light);
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Dark Mode Toggle */
+        .theme-toggle {
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: var(--white);
+                padding: 1rem;
+                border-radius: 12px;
+                margin-top: 1rem;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            }
+
+            .hero-section {
+                text-align: center;
+                padding-top: 120px;
+            }
+
+            .hero-subtitle {
+                margin: 0 auto 2rem;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-image {
+                margin-top: 3rem;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .hero-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero-buttons .btn {
+                width: 100%;
+            }
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Stars Animation */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+    </style>
+</head>
+<body class="h-full w-full" data-bs-theme="light">
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar navbar-expand-lg fixed-top" id="mainNavbar">
+        <div class="container">
+            <a class="navbar-brand" href="#" id="brandName">LaunchPad</a>
+            
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="bi bi-list fs-3"></i>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#hero">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#pricing">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center gap-3">
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                        <i class="bi bi-moon-fill"></i>
+                    </button>
+                    <a href="#cta" class="btn btn-gradient">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================= HERO SECTION ================= -->
+    <section class="hero-section" id="hero">
+        <!-- Animated Stars Background -->
+        <div class="stars" id="starsContainer"></div>
+        
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 hero-content">
+                    <h1 class="hero-title" id="heroTitle">
+                        Build Something<br>
+                        <span style="opacity: 0.9;">Amazing Today</span>
+                    </h1>
+                    <p class="hero-subtitle" id="heroSubtitle">
+                        Empower your business with our cutting-edge platform. 
+                        Streamline workflows, boost productivity, and achieve your goals faster than ever before.
+                    </p>
+                    <div class="hero-buttons d-flex gap-3 flex-wrap">
+                        <a href="#pricing" class="btn btn-light btn-lg px-4 py-3" style="border-radius: 50px; font-weight: 600;">
+                            Start Free Trial
+                        </a>
+                        <a href="#" 
+                           class="btn btn-outline-light btn-lg px-4 py-3"
+                           data-bs-toggle="modal"
+                           data-bs-target="#videoModal"
+                           id="openVideo"
+                           style="border-radius: 50px; font-weight: 600;">
+                            <i class="bi bi-play-circle me-2"></i>Watch Demo
+                        </a>
+                    </div>
+                    
+                    <!-- Trust Badges -->
+                    <div class="mt-5 d-flex align-items-center gap-4 flex-wrap">
+                        <div class="d-flex align-items-center">
+                            <div class="d-flex">
+                                <div class="rounded-circle bg-white" style="width: 32px; height: 32px; margin-right: -8px; border: 2px solid var(--primary-color);"></div>
+                                <div class="rounded-circle bg-white" style="width: 32px; height: 32px; margin-right: -8px; border: 2px solid var(--primary-color);"></div>
+                                <div class="rounded-circle bg-white" style="width: 32px; height: 32px; margin-right: -8px; border: 2px solid var(--primary-color);"></div>
+                                <div class="rounded-circle bg-white d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; border: 2px solid var(--primary-color); font-size: 10px; font-weight: 600; color: var(--primary-color);">+5k</div>
+                            </div>
+                            <span class="ms-3 text-white small">Join 5,000+ users</span>
+                        </div>
+                        <div class="d-flex align-items-center text-white">
+                            <i class="bi bi-star-fill text-warning me-1"></i>
+                            <i class="bi bi-star-fill text-warning me-1"></i>
+                            <i class="bi bi-star-fill text-warning me-1"></i>
+                            <i class="bi bi-star-fill text-warning me-1"></i>
+                            <i class="bi bi-star-fill text-warning me-2"></i>
+                            <span class="small">4.9/5 rating</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 hero-image">
+                    <!-- Hero SVG Illustration -->
+                    <svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Dashboard Card -->
+                        <rect x="50" y="50" width="400" height="300" rx="20" fill="white" filter="drop-shadow(0 20px 40px rgba(0,0,0,0.1))"/>
+                        
+                        <!-- Header Bar -->
+                        <rect x="50" y="50" width="400" height="60" rx="20" fill="#f8fafc"/>
+                        <rect x="50" y="90" width="400" height="20" fill="#f8fafc"/>
+                        
+                        <!-- Window Controls -->
+                        <circle cx="80" cy="80" r="8" fill="#ff5f57"/>
+                        <circle cx="105" cy="80" r="8" fill="#febc2e"/>
+                        <circle cx="130" cy="80" r="8" fill="#28c840"/>
+                        
+                        <!-- Chart -->
+                        <rect x="80" y="140" width="340" height="120" rx="10" fill="#f8fafc"/>
+                        
+                        <!-- Bar Chart -->
+                        <rect x="100" y="200" width="30" height="50" rx="5" fill="#667eea"/>
+                        <rect x="145" y="180" width="30" height="70" rx="5" fill="#764ba2"/>
+                        <rect x="190" y="160" width="30" height="90" rx="5" fill="#667eea"/>
+                        <rect x="235" y="170" width="30" height="80" rx="5" fill="#764ba2"/>
+                        <rect x="280" y="150" width="30" height="100" rx="5" fill="#667eea"/>
+                        <rect x="325" y="140" width="30" height="110" rx="5" fill="#764ba2"/>
+                        <rect x="370" y="155" width="30" height="95" rx="5" fill="#667eea"/>
+                        
+                        <!-- Stats Cards -->
+                        <rect x="80" y="280" width="100" height="50" rx="10" fill="white" stroke="#e5e7eb" stroke-width="1"/>
+                        <rect x="200" y="280" width="100" height="50" rx="10" fill="white" stroke="#e5e7eb" stroke-width="1"/>
+                        <rect x="320" y="280" width="100" height="50" rx="10" fill="white" stroke="#e5e7eb" stroke-width="1"/>
+                        
+                        <!-- Stat Icons -->
+                        <circle cx="100" cy="305" r="10" fill="#667eea" opacity="0.2"/>
+                        <circle cx="220" cy="305" r="10" fill="#764ba2" opacity="0.2"/>
+                        <circle cx="340" cy="305" r="10" fill="#667eea" opacity="0.2"/>
+                        
+                        <!-- Floating Elements -->
+                        <circle cx="470" cy="100" r="30" fill="#667eea" opacity="0.3">
+                            <animate attributeName="cy" values="100;80;100" dur="3s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="30" cy="200" r="20" fill="#764ba2" opacity="0.3">
+                            <animate attributeName="cy" values="200;220;200" dur="4s" repeatCount="indefinite"/>
+                        </circle>
+                        <rect x="460" y="300" width="40" height="40" rx="10" fill="#667eea" opacity="0.2">
+                            <animate attributeName="y" values="300;320;300" dur="5s" repeatCount="indefinite"/>
+                        </rect>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FEATURES SECTION ================= -->
+    <section class="py-5" id="features" style="padding: 100px 0;">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill mb-3">Features</span>
+                <h2 class="section-title">Everything You Need to Succeed</h2>
+                <p class="section-subtitle">Powerful tools designed to help you work smarter, not harder. Experience the future of productivity.</p>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Feature 1 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-lightning-charge-fill"></i>
+                        </div>
+                        <h4 class="feature-title">Lightning Fast</h4>
+                        <p class="feature-text">Experience blazing-fast performance with our optimized infrastructure. No more waiting around.</p>
+                    </div>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <h4 class="feature-title">Enterprise Security</h4>
+                        <p class="feature-text">Bank-grade encryption and security protocols keep your data safe and protected at all times.</p>
+                    </div>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-graph-up-arrow"></i>
+                        </div>
+                        <h4 class="feature-title">Advanced Analytics</h4>
+                        <p class="feature-text">Gain deep insights with real-time analytics and customizable dashboards.</p>
+                    </div>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                        <h4 class="feature-title">Team Collaboration</h4>
+                        <p class="feature-text">Work together seamlessly with built-in collaboration tools and real-time sync.</p>
+                    </div>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-puzzle-fill"></i>
+                        </div>
+                        <h4 class="feature-title">Easy Integrations</h4>
+                        <p class="feature-text">Connect with 100+ popular tools and services you already use daily.</p>
+                    </div>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-headset"></i>
+                        </div>
+                        <h4 class="feature-title">24/7 Support</h4>
+                        <p class="feature-text">Our dedicated support team is always here to help you succeed.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= ABOUT SECTION ================= -->
+    <section class="about-section py-5" id="about" style="padding: 100px 0;">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <div class="about-image">
+                        <!-- About SVG Illustration -->
+                        <svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Background -->
+                            <rect x="0" y="0" width="500" height="400" fill="white" rx="20"/>
+                            
+                            <!-- Decorative Elements -->
+                            <circle cx="400" cy="50" r="100" fill="#667eea" opacity="0.1"/>
+                            <circle cx="50" cy="350" r="80" fill="#764ba2" opacity="0.1"/>
+                            
+                            <!-- Person Working -->
+                            <ellipse cx="250" cy="350" rx="120" ry="20" fill="#e5e7eb"/>
+                            
+                            <!-- Desk -->
+                            <rect x="100" y="250" width="300" height="20" rx="5" fill="#667eea"/>
+                            <rect x="120" y="270" width="15" height="80" fill="#5563d4"/>
+                            <rect x="365" y="270" width="15" height="80" fill="#5563d4"/>
+                            
+                            <!-- Monitor -->
+                            <rect x="180" y="140" width="140" height="100" rx="10" fill="#1a1a2e"/>
+                            <rect x="190" y="150" width="120" height="70" rx="5" fill="#667eea"/>
+                            <rect x="240" y="240" width="20" height="15" fill="#1a1a2e"/>
+                            <rect x="220" y="245" width="60" height="8" rx="4" fill="#1a1a2e"/>
+                            
+                            <!-- Code Lines on Screen -->
+                            <rect x="200" y="160" width="60" height="6" rx="3" fill="white" opacity="0.8"/>
+                            <rect x="200" y="175" width="80" height="6" rx="3" fill="white" opacity="0.6"/>
+                            <rect x="200" y="190" width="50" height="6" rx="3" fill="white" opacity="0.8"/>
+                            <rect x="200" y="205" width="70" height="6" rx="3" fill="white" opacity="0.6"/>
+                            
+                            <!-- Person -->
+                            <circle cx="250" cy="80" r="35" fill="#fcd5ce"/>
+                            <ellipse cx="250" cy="180" rx="50" ry="60" fill="#667eea"/>
+                            
+                            <!-- Arms -->
+                            <ellipse cx="310" cy="200" rx="40" ry="15" fill="#fcd5ce" transform="rotate(-30 310 200)"/>
+                            <ellipse cx="190" cy="200" rx="40" ry="15" fill="#fcd5ce" transform="rotate(30 190 200)"/>
+                            
+                            <!-- Hair -->
+                            <ellipse cx="250" cy="60" rx="40" ry="25" fill="#1a1a2e"/>
+                            
+                            <!-- Coffee Cup -->
+                            <rect x="340" y="220" width="25" height="30" rx="3" fill="white" stroke="#e5e7eb" stroke-width="2"/>
+                            <ellipse cx="352" cy="220" rx="12" ry="4" fill="#e5e7eb"/>
+                            <path d="M365 225 Q 380 235 365 245" stroke="#e5e7eb" stroke-width="2" fill="none"/>
+                            
+                            <!-- Plant -->
+                            <rect x="380" y="200" width="20" height="50" rx="3" fill="#d4a574"/>
+                            <ellipse cx="390" cy="180" rx="25" ry="30" fill="#28c840"/>
+                            <ellipse cx="380" cy="170" rx="15" ry="20" fill="#22a838"/>
+                            
+                            <!-- Floating Icons -->
+                            <circle cx="120" cy="100" r="25" fill="#667eea" opacity="0.2">
+                                <animate attributeName="cy" values="100;80;100" dur="4s" repeatCount="indefinite"/>
+                            </circle>
+                            <rect x="400" cy="180" width="30" height="30" rx="8" fill="#764ba2" opacity="0.2">
+                                <animate attributeName="y" values="180;200;180" dur="5s" repeatCount="indefinite"/>
+                            </rect>
+                        </svg>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill mb-3">About Us</span>
+                    <h2 class="section-title mb-4">We're on a Mission to Transform How Teams Work</h2>
+                    <p class="text-muted mb-4">
+                        Founded in 2020, we've helped thousands of teams streamline their workflows and achieve more. 
+                        Our platform combines powerful features with an intuitive interface that anyone can use.
+                    </p>
+                    
+                    <ul class="about-list">
+                        <li>
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span>Intuitive interface that requires no training</span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span>Seamless integration with your existing tools</span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span>99.9% uptime guarantee with enterprise SLA</span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span>GDPR compliant with SOC 2 Type II certification</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="#features" class="btn btn-gradient mt-4">Learn More <i class="bi bi-arrow-right ms-2"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= PRICING SECTION ================= -->
+    <section class="py-5" id="pricing" style="padding: 100px 0;">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill mb-3">Pricing</span>
+                <h2 class="section-title">Simple, Transparent Pricing</h2>
+                <p class="section-subtitle">No hidden fees. No surprises. Choose the plan that works best for you.</p>
+            </div>
+            
+            <div class="row g-4 justify-content-center">
+                <!-- Starter Plan -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="pricing-card shadow-sm">
+                        <h4 class="fw-bold mb-2">Starter</h4>
+                        <p class="text-muted small mb-4">Perfect for individuals</p>
+                        <div class="pricing-price">$9</div>
+                        <p class="text-muted mb-4">per month</p>
+                        <ul class="pricing-features">
+                            <li><i class="bi bi-check text-success me-2"></i>Up to 5 projects</li>
+                            <li><i class="bi bi-check text-success me-2"></i>Basic analytics</li>
+                            <li><i class="bi bi-check text-success me-2"></i>Email support</li>
+                            <li><i class="bi bi-check text-success me-2"></i>1 GB storage</li>
+                            <li><i class="bi bi-x text-muted me-2"></i>API access</li>
+                        </ul>
+                        <a href="#" class="btn btn-outline-gradient w-100">Get Started</a>
+                    </div>
+                </div>
+                
+                <!-- Pro Plan -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="pricing-card popular shadow-lg">
+                        <h4 class="fw-bold mb-2">Professional</h4>
+                        <p class="text-muted small mb-4">Best for growing teams</p>
+                        <div class="pricing-price">$29</div>
+                        <p class="text-muted mb-4">per month</p>
+                        <ul class="pricing-features">
+                            <li><i class="bi bi-check text-success me-2"></i>Unlimited projects</li>
+                            <li><i class="bi bi-check text-success me-2"></i>Advanced analytics</li>
+                            <li><i class="bi bi-check text-success me-2"></i>Priority support</li>
+                            <li><i class="bi bi-check text-success me-2"></i>25 GB storage</li>
+                            <li><i class="bi bi-check text-success me-2"></i>API access</li>
+                        </ul>
+                        <a href="#" class="btn btn-gradient w-100">Get Started</a>
+                    </div>
+                </div>
+                
+                <!-- Enterprise Plan -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="pricing-card shadow-sm">
+                        <h4 class="fw-bold mb-2">Enterprise</h4>
+                        <p class="text-muted small mb-4">For large organizations</p>
+                        <div class="pricing-price">$99</div>
+                        <p class="text-muted mb-4">per month</p>
+                        <ul class="pricing-features">
+                            <li><i class="bi bi-check text-success me-2"></i>Everything in Pro</li>
+                            <li><i class="bi bi-check text-success me-2"></i>Custom integrations</li>
+                            <li><i class="bi bi-check text-success me-2"></i>Dedicated manager</li>
+                            <li><i class="bi bi-check text-success me-2"></i>Unlimited storage</li>
+                            <li><i class="bi bi-check text-success me-2"></i>SLA guarantee</li>
+                        </ul>
+                        <a href="#" class="btn btn-outline-gradient w-100">Contact Sales</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= TESTIMONIALS SECTION ================= -->
+    <section class="py-5" id="testimonials" style="padding: 100px 0; background: var(--bg-light);">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill mb-3">Testimonials</span>
+                <h2 class="section-title">Loved by Teams Worldwide</h2>
+                <p class="section-subtitle">Don't just take our word for it. Here's what our customers have to say.</p>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Testimonial 1 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="testimonial-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                        </div>
+                        <p class="testimonial-text">"LaunchPad has completely transformed how our team works. We've increased productivity by 40% since switching."</p>
+                        <div class="d-flex align-items-center">
+                            <div class="testimonial-avatar">SK</div>
+                            <div class="ms-3">
+                                <div class="testimonial-name">Sarah Kim</div>
+                                <div class="testimonial-role">CEO, TechStart</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="testimonial-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                        </div>
+                        <p class="testimonial-text">"The best investment we've made this year. The ROI was visible within the first month of using the platform."</p>
+                        <div class="d-flex align-items-center">
+                            <div class="testimonial-avatar">MJ</div>
+                            <div class="ms-3">
+                                <div class="testimonial-name">Michael Johnson</div>
+                                <div class="testimonial-role">CTO, Innovate Inc</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="testimonial-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                        </div>
+                        <p class="testimonial-text">"Customer support is incredible. They helped us migrate our entire workflow in just two days. Highly recommended!"</p>
+                        <div class="d-flex align-items-center">
+                            <div class="testimonial-avatar">EP</div>
+                            <div class="ms-3">
+                                <div class="testimonial-name">Emily Parker</div>
+                                <div class="testimonial-role">PM, DesignCo</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= CTA SECTION ================= -->
+    <section class="cta-section py-5" id="cta" style="padding: 100px 0;">
+        <div class="container cta-content text-center text-white">
+            <h2 class="display-4 fw-bold mb-4" id="ctaTitle">Ready to Transform Your Workflow?</h2>
+            <p class="lead mb-5 mx-auto" style="max-width: 600px;" id="ctaSubtitle">
+                Join thousands of teams already using LaunchPad to achieve their goals. Start your free trial today.
+            </p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="#pricing" class="btn btn-light btn-lg px-5 py-3" style="border-radius: 50px; font-weight: 600;">
+                    Start Free Trial
+                </a>
+                <a href="#contact" class="btn btn-outline-light btn-lg px-5 py-3" style="border-radius: 50px; font-weight: 600;">
+                    Contact Sales
+                </a>
+            </div>
+            
+            <div class="mt-5 pt-4">
+                <p class="small opacity-75 mb-3">Trusted by leading companies</p>
+                <div class="d-flex justify-content-center align-items-center gap-4 flex-wrap opacity-75">
+                    <span class="fw-bold fs-5">Google</span>
+                    <span class="fw-bold fs-5">Microsoft</span>
+                    <span class="fw-bold fs-5">Spotify</span>
+                    <span class="fw-bold fs-5">Slack</span>
+                    <span class="fw-bold fs-5">Airbnb</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer py-5" id="contact">
+        <div class="container">
+            <div class="row g-4 mb-5">
+                <!-- Company Info -->
+                <div class="col-lg-4 col-md-6">
+                    <a class="navbar-brand text-white d-block mb-3" href="#" id="footerBrandName" style="font-size: 1.5rem; font-weight: 800;">LaunchPad</a>
+                    <p class="mb-4">Building the future of productivity, one team at a time. Join us on our mission to transform how the world works.</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" aria-label="GitHub"><i class="bi bi-github"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Product Links -->
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="footer-title">Product</h5>
+                    <ul class="footer-links">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#">Integrations</a></li>
+                        <li><a href="#">Changelog</a></li>
+                        <li><a href="#">Roadmap</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Company Links -->
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="footer-title">Company</h5>
+                    <ul class="footer-links">
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Press Kit</a></li>
+                        <li><a href="#">Partners</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Support Links -->
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="footer-title">Support</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">API Reference</a></li>
+                        <li><a href="#">Status</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Legal Links -->
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="footer-title">Legal</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">GDPR</a></li>
+                        <li><a href="#">Security</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr style="border-color: rgba(255,255,255,0.1);">
+            
+            <div class="row align-items-center pt-4">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0 small">© 2024 LaunchPad. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0 small">Made with <i class="bi bi-heart-fill text-danger"></i> for teams everywhere</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Default configuration
+        const defaultConfig = {
+            hero_title: "Build Something Amazing Today",
+            hero_subtitle: "Empower your business with our cutting-edge platform. Streamline workflows, boost productivity, and achieve your goals faster than ever before.",
+            brand_name: "LaunchPad",
+            cta_title: "Ready to Transform Your Workflow?",
+            cta_subtitle: "Join thousands of teams already using LaunchPad to achieve their goals. Start your free trial today.",
+            primary_color: "#667eea",
+            secondary_color: "#764ba2",
+            background_color: "#ffffff",
+            text_color: "#1a1a2e",
+            accent_color: "#f8fafc"
+        };
+
+        // Initialize Element SDK
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig,
+                onConfigChange: async (config) => {
+                    // Update hero title
+                    const heroTitle = document.getElementById('heroTitle');
+                    if (heroTitle) {
+                        const titleText = config.hero_title || defaultConfig.hero_title;
+                        const words = titleText.split(' ');
+                        const midPoint = Math.ceil(words.length / 2);
+                        heroTitle.innerHTML = words.slice(0, midPoint).join(' ') + '<br><span style="opacity: 0.9;">' + words.slice(midPoint).join(' ') + '</span>';
+                    }
+
+                    // Update hero subtitle
+                    const heroSubtitle = document.getElementById('heroSubtitle');
+                    if (heroSubtitle) {
+                        heroSubtitle.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+                    }
+
+                    // Update brand name
+                    const brandName = document.getElementById('brandName');
+                    const footerBrandName = document.getElementById('footerBrandName');
+                    if (brandName) {
+                        brandName.textContent = config.brand_name || defaultConfig.brand_name;
+                    }
+                    if (footerBrandName) {
+                        footerBrandName.textContent = config.brand_name || defaultConfig.brand_name;
+                    }
+
+                    // Update CTA title
+                    const ctaTitle = document.getElementById('ctaTitle');
+                    if (ctaTitle) {
+                        ctaTitle.textContent = config.cta_title || defaultConfig.cta_title;
+                    }
+
+                    // Update CTA subtitle
+                    const ctaSubtitle = document.getElementById('ctaSubtitle');
+                    if (ctaSubtitle) {
+                        ctaSubtitle.textContent = config.cta_subtitle || defaultConfig.cta_subtitle;
+                    }
+
+                    // Update colors
+                    const primaryColor = config.primary_color || defaultConfig.primary_color;
+                    const secondaryColor = config.secondary_color || defaultConfig.secondary_color;
+                    
+                    document.documentElement.style.setProperty('--primary-color', primaryColor);
+                    document.documentElement.style.setProperty('--secondary-color', secondaryColor);
+                    document.documentElement.style.setProperty('--gradient-start', primaryColor);
+                    document.documentElement.style.setProperty('--gradient-end', secondaryColor);
+                },
+                mapToCapabilities: (config) => ({
+                    recolorables: [
+                        {
+                            get: () => config.background_color || defaultConfig.background_color,
+                            set: (value) => {
+                                config.background_color = value;
+                                window.elementSdk.setConfig({ background_color: value });
+                            }
+                        },
+                        {
+                            get: () => config.accent_color || defaultConfig.accent_color,
+                            set: (value) => {
+                                config.accent_color = value;
+                                window.elementSdk.setConfig({ accent_color: value });
+                            }
+                        },
+                        {
+                            get: () => config.text_color || defaultConfig.text_color,
+                            set: (value) => {
+                                config.text_color = value;
+                                window.elementSdk.setConfig({ text_color: value });
+                            }
+                        },
+                        {
+                            get: () => config.primary_color || defaultConfig.primary_color,
+                            set: (value) => {
+                                config.primary_color = value;
+                                window.elementSdk.setConfig({ primary_color: value });
+                            }
+                        },
+                        {
+                            get: () => config.secondary_color || defaultConfig.secondary_color,
+                            set: (value) => {
+                                config.secondary_color = value;
+                                window.elementSdk.setConfig({ secondary_color: value });
+                            }
+                        }
+                    ],
+                    borderables: [],
+                    fontEditable: undefined,
+                    fontSizeable: undefined
+                }),
+                mapToEditPanelValues: (config) => new Map([
+                    ["hero_title", config.hero_title || defaultConfig.hero_title],
+                    ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle],
+                    ["brand_name", config.brand_name || defaultConfig.brand_name],
+                    ["cta_title", config.cta_title || defaultConfig.cta_title],
+                    ["cta_subtitle", config.cta_subtitle || defaultConfig.cta_subtitle]
+                ])
+            });
+        }
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('mainNavbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Dark mode toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-bs-theme', newTheme);
+            
+            // Update icon
+            const icon = themeToggle.querySelector('i');
+            icon.className = newTheme === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
+        });
+
+        // Create animated stars
+        function createStars() {
+            const container = document.getElementById('starsContainer');
+            const numberOfStars = 50;
+            
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (2 + Math.random() * 3) + 's';
+                container.appendChild(star);
+            }
+        }
+        
+        createStars();
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+                
+                // Close mobile menu if open
+                const navbarCollapse = document.querySelector('.navbar-collapse');
+                if (navbarCollapse.classList.contains('show')) {
+                    new bootstrap.Collapse(navbarCollapse).hide();
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Apply animation to cards
+        document.querySelectorAll('.feature-card, .pricing-card, .testimonial-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+
+    <!-- ================= YOUTUBE MODAL ================= -->
+    <div class="modal fade" id="videoModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content bg-dark">
+          <div class="modal-body p-0">
+            <div class="ratio ratio-16x9">
+              <iframe id="youtubeVideo"
+                src="https://www.youtube.com/embed/FupOhJDNyGM?si=lGH2pDbOmSxEeRlo"
+                title="YouTube video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+              </iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+        const videoModal = document.getElementById('videoModal');
+        const youtubeIframe = document.getElementById('youtubeVideo');
+
+        videoModal.addEventListener('shown.bs.modal', () => {
+            youtubeIframe.src = "https://www.youtube.com/embed/FupOhJDNyGM?autoplay=1";
+        });
+
+        videoModal.addEventListener('hidden.bs.modal', () => {
+            youtubeIframe.src = "";
+        });
+    </script>
+
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cfbb0b704c926e6',t:'MTc3MTM5ODQ3NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html> 
